@@ -1,0 +1,82 @@
+@startuml
+' Layout
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam dpi 150
+hide stereotype
+hide circle
+
+' Stereotype-based coloring (red = to map; blue = already mapped)
+skinparam class {
+  BackgroundColor<<RED>> #fff0f0
+  BorderColor<<RED>> #cc0000
+  BackgroundColor<<BLUE>> #f0f6ff
+  BorderColor<<BLUE>> #0a58ca
+}
+
+' ========= Classes =========
+class ProblemSource <<RED>> {
+  +String name
+  +String author
+  +String description
+  +String contactEmail
+}
+
+class ChessProblemSolution <<RED>> {
+  +String name
+  +LocalDateTime createdAt
+  +boolean minimal
+  +String notes
+  +Integer expectedMoveCount
+}
+
+class ChessProblem <<BLUE>> {
+  +String name
+  +int difficultyLevel
+  +String goal
+}
+
+class ChessBoard <<BLUE>> {
+  +boolean creatorTurn
+  +LocalDateTime currentTurnStart
+  +boolean jaque
+}
+
+class Piece {
+  +String type
+  +String color
+  +String posFile
+  +Integer posRank
+}
+
+class ChessProblemAttempt <<BLUE>> {
+  +String name
+  +LocalDateTime start
+  +LocalDateTime finish
+}
+
+class User {
+  +String username
+  +String password
+}
+
+' ========= Relationships =========
+' Problem -> Board (0..1 to 1)
+ChessProblem "0..1" --> "1" ChessBoard : board
+
+' Attempt -> Player (0..n to 1), Attempt -> Problem (0..n to 1), Attempt -> Board (0..1 to 1, composition)
+ChessProblemAttempt "0..n" --> "1" User : player
+ChessProblem "1" <-- "0..n" ChessProblemAttempt : problem
+ChessProblemAttempt "0..1" *--> "1" ChessBoard : board
+
+' Solution -> Problem (0..n to 1), Solution -> Board (0..1 to 1, composition)
+ChessProblemSolution "0..n" --> "1" ChessProblem : problem
+ChessProblemSolution "0..1" *--> "1" ChessBoard : solutionBoard
+
+' ProblemSource <-> ChessProblem (0..n to 0..n)
+ProblemSource "0..n" --> "0..n" ChessProblem : problems
+
+' Board <-> Piece (1 to 0..n)
+ChessBoard "1" <--> "0..n" Piece : pieces
+@enduml
