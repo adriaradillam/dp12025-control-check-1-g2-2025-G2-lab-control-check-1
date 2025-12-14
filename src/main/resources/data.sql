@@ -130,3 +130,18 @@ insert into piece (id, board_id, type, color, pos_file, pos_rank) values
   (9112, 911, 'R', 'W', 'h', 1),
   (9113, 911, 'Q', 'W', 'd', 5),
   (9114, 911, 'k', 'B', 'g', 8);
+
+insert into problem_source (id, name, author, description, contact_email) values
+  (801, 'Classic Puzzle Compendium', 'H. Steinitz', 'A curated set of elegant checkmate studies published in 1895.', 'steinitz@classicpuzzles.org'),
+  (802, 'Modern Engine Analysis 2025', 'DeepEval AI', 'Computer-validated solutions using latest neural networks.', 'analysis@deepeval.ai');
+
+insert into chess_problem_solution (id, name, created_at, minimal, notes, expected_move_count, problem_id, solution_board_id) values 
+  (901, 'Canonical Mate in 1 (line A)', '2025-01-10 09:11:00', true, 'Immediate mate with Qh5# from the starting position.', 1, 1, 910),
+  (902, 'Canonical Mate in 2 (line B)', '2025-01-10 09:21:00', true, 'Two-move forcing sequence ending in mate with Qd5#.', 2, 3, 911);
+
+insert into problem_source_problems (problem_source_id, problems_id) values 
+  (801, 1),
+  (801, 3),
+  (802, 2),
+  (802, 4),
+  (802, 5);
